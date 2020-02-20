@@ -9,20 +9,26 @@ from navbar import Navbar
 
 nav = Navbar()
 
-def Analysis(r,t, x):
+def Charts(r,t, x, df1):
     if r == 0:
         df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
-        print("tu o wiele lepiej bo r = ", r)
-
+        print ("załadowane!")
+        print (df1["data"][0])
+        ti = pd.to_datetime(df1.data)
+        ti = ti.dt.date
+        print("data", ti[0])
     else:
         df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+        print ("nie załadowane")
+        ti =[]
+        
         
     header = html.H3(
         '{}'. format(t)
     )
 
-    graph = dcc.Graph(id='graph-with-slider')
-    slider = dcc.Slider(
+    graph1 = dcc.Graph(id='graph-with-slider')
+    slider1 = dcc.Slider(
             id='year-slider',
             min=df['year'].min(),
             max=df['year'].max(),
@@ -31,20 +37,20 @@ def Analysis(r,t, x):
             step=None
         )
 
-    graph1 = dcc.Graph(id='gra')
-    slider1 = dcc.RangeSlider(id = 'daty-slider',
-            marks={i : {'label' : x[i], 'style':{'transform':'rotate(-45deg)', 'font-size':'15px'}} for i in range(0, len(x)) if i %2 ==1 },
-            min = 1,
-            max = len(x),
-            value = [3, len(x)-2])
+    graph = dcc.Graph(id='gra')
+    slider = dcc.RangeSlider(id = 'daty-slider',
+            marks={i : {'label' : ti[i], 'style':{'font-size':'15px'}} for i in range(0, len(ti)) if i %2 == 1 },
+            min = 0,
+            max = len(ti)-1,
+            value = [0, len(ti)])
 
     layout = html.Div([
         nav,
         header,
         graph,
-        slider,
-        graph1,
-        slider1
+        html.Br(),
+        html.Br(),
+        slider
 
     ])
     return layout

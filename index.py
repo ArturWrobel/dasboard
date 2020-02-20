@@ -9,7 +9,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 from app import App, build_graph
-from analysis import Analysis
+from charts import Charts
 from homepage import Homepage
 from apka import Apka
 from download import Download
@@ -55,14 +55,14 @@ def display_page(pathname):
         return App()
     elif pathname == '/apka':
         return Apka(x,z, text)
-    elif pathname == '/analysis':
-        return Analysis(r,t, x)
+    elif pathname == '/charts':
+        return Charts(r,t, x, df1)
     elif pathname == '/homepage':
         return Homepage()
     else:
         return Home()
 
-# Callback to chose Citi (App)
+# Callback (App)
 @app.callback(
     Output('output', 'children'),
     [Input('pop_dropdown', 'value')]
@@ -72,7 +72,8 @@ def update_graph(city):
     graph = build_graph(city)
     return graph
 
-# Callback (Analysis)
+# Callback (Charts)
+
 @app.callback(
     Output('graph-with-slider', 'figure'),
     [Input('year-slider', 'value')])
@@ -111,17 +112,28 @@ def update_figure(selected_year):
     Output('gra', 'figure'),
     [Input('daty-slider', 'value')])
 def up(figure):
-    g = df1.index[figure[0]:figure[1]].tolist()
-    print (z[0])
-    print (df1["costs"][0])
+    
+    if r == 1:
+        od = 0
+        do = 0
+        data = []
+    else:
+        g = df1.index[figure[0]:(figure[1]+1)].tolist()
+        print("gggggggg",g)
+        print("figures ",figure[0]," and ", figure[1])
+        od = df1["data"][figure[0]]
+        
+        do = df1["data"][figure[1]-1]
+        print("od: ", od, " do: ",do)
 
-    h = [z[i] for i in g]
-    print(h)
-    data = [
+        data = [
         dict(
             x = g,
             y = [df1["costs"][i] for i in g],
-            name = "costs"
+            name = "costs",
+            marker=dict(
+                    color='rgb(26, 118, 255)'
+                )
         ),
         dict(
             x = g,
@@ -140,39 +152,17 @@ def up(figure):
         )
     ]
 
-
-    """ data=[
-            dict(
-                x=[1994, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
-                   2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
-                y=[219, 146, 112, 127, 124, 180, 236, 207, 236, 263,
-                   350, 430, 474, 526, 488, 537, 500, 439],
-                name='Rest of world',
-                marker=dict(
-                    color='rgb(55, 83, 109)'
-                )
-            ),
-            dict(
-                x=[1994, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
-                   2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
-                y=[16, 13, 10, 11, 28, 37, 43, 55, 56, 88, 105, 156, 270,
-                   299, 340, 403, 549, 499],
-                name='China',
-                marker=dict(
-                    color='rgb(26, 118, 255)'
-                )
-            )
-        ] """
-   
     return {"data": data,
     "layout": dict(
-            title='US Export of Plastic Scrap',
+            title='Sales data',
             showlegend=True,
             legend=dict(
-                x=0,
-                y=1.0
+                x=1,
+                y=1
             ),
-            margin=dict(l=40, r=0, t=40, b=30)
+            margin=dict(l=40, r=0, t=40, b=30),
+            hovermode='closest',
+            transition = {'duration': 500},
         )
     }
 
@@ -212,7 +202,7 @@ def parse_contents(contents, filename, date):
             global r
             r = 0
             global t
-            t = "Udało się!!!!????????????????????????????????"       
+            t = "Download succesful :)"       
             
     except Exception as e:
         print(e)

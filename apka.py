@@ -61,7 +61,7 @@ className="mt-4",
 def Apka(x,z, text):
     layout = html.Div([
     nav,
-    body(x,z, text)
+    body(x, z, text)
     ])
     return layout
 
