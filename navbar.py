@@ -7,9 +7,8 @@ def Navbar():
               dbc.NavItem(dbc.NavLink("Download", href="/download")),
               dbc.NavItem(dbc.NavLink("App", href="/app")),
               dbc.NavItem(dbc.NavLink("Apka", href="/apka")),
-              dbc.NavItem(dbc.NavLink("Homepage", href="/homepage")),
-
-              
+              dbc.NavItem(dbc.NavLink("Analysis", href="/analysis")),
+                            
                     ],
           brand="Orange Finance",
           brand_href="/home",

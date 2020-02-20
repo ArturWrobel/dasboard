@@ -9,6 +9,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 from app import App, build_graph
+from analysis import Analysis
 from homepage import Homepage
 from apka import Apka
 from download import Download
@@ -24,6 +25,10 @@ external_stylesheets = [
     dbc.themes.UNITED,
     
 ]
+df1 = []
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+r = 1
+t = "Please load data first"
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -35,8 +40,10 @@ app.layout = html.Div([
 ])
 
 # Callback to chose page
-x=[1,2,3]
-z=[2,2,2]
+
+x=[]
+z=[]
+text = "Please download data first"
 
 @app.callback(Output('page-content', 'children'),
             [Input('url', 'pathname')])
@@ -47,7 +54,9 @@ def display_page(pathname):
     elif pathname == '/app':
         return App()
     elif pathname == '/apka':
-        return Apka(x,z)
+        return Apka(x,z, text)
+    elif pathname == '/analysis':
+        return Analysis(r,t, x)
     elif pathname == '/homepage':
         return Homepage()
     else:
@@ -63,6 +72,111 @@ def update_graph(city):
     graph = build_graph(city)
     return graph
 
+# Callback (Analysis)
+@app.callback(
+    Output('graph-with-slider', 'figure'),
+    [Input('year-slider', 'value')])
+def update_figure(selected_year):
+    filtered_df = df[df.year == selected_year]
+    traces = []
+    for i in filtered_df.continent.unique():
+        df_by_continent = filtered_df[filtered_df['continent'] == i]
+        traces.append(dict(
+            x=df_by_continent['gdpPercap'],
+            y=df_by_continent['lifeExp'],
+            text=df_by_continent['country'],
+            mode='markers',
+            opacity=0.7,
+            marker={
+                'size': 15,
+                'line': {'width': 0.5, 'color': 'white'}
+            },
+            name=i
+        ))
+
+    return {
+        'data': traces,
+        'layout': dict(
+            xaxis={'type': 'log', 'title': 'GDP Per Capita',
+                   'range':[2.3, 4.8]},
+            yaxis={'title': 'Life Expectancy', 'range': [20, 90]},
+            margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
+            legend={'x': 0, 'y': 1},
+            hovermode='closest',
+            transition = {'duration': 500},
+        )
+    }
+
+@app.callback(
+    Output('gra', 'figure'),
+    [Input('daty-slider', 'value')])
+def up(figure):
+    g = df1.index[figure[0]:figure[1]].tolist()
+    print (z[0])
+    print (df1["costs"][0])
+
+    h = [z[i] for i in g]
+    print(h)
+    data = [
+        dict(
+            x = g,
+            y = [df1["costs"][i] for i in g],
+            name = "costs"
+        ),
+        dict(
+            x = g,
+            y = [df1["sold"][i] for i in g],
+            name = "sold"
+        ),
+        dict(
+            x = g,
+            y = [df1["result"][i] for i in g],
+            name = "result"
+        ),
+        dict(
+            x = g,
+            y = [df1["cumulated"][i] for i in g],
+            name = "cumulated"
+        )
+    ]
+
+
+    """ data=[
+            dict(
+                x=[1994, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
+                   2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
+                y=[219, 146, 112, 127, 124, 180, 236, 207, 236, 263,
+                   350, 430, 474, 526, 488, 537, 500, 439],
+                name='Rest of world',
+                marker=dict(
+                    color='rgb(55, 83, 109)'
+                )
+            ),
+            dict(
+                x=[1994, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
+                   2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
+                y=[16, 13, 10, 11, 28, 37, 43, 55, 56, 88, 105, 156, 270,
+                   299, 340, 403, 549, 499],
+                name='China',
+                marker=dict(
+                    color='rgb(26, 118, 255)'
+                )
+            )
+        ] """
+   
+    return {"data": data,
+    "layout": dict(
+            title='US Export of Plastic Scrap',
+            showlegend=True,
+            legend=dict(
+                x=0,
+                y=1.0
+            ),
+            margin=dict(l=40, r=0, t=40, b=30)
+        )
+    }
+
+# Reading file
 
 def parse_contents(contents, filename, date):
     content_type, content_string = contents.split(',')
@@ -77,22 +191,28 @@ def parse_contents(contents, filename, date):
         elif 'xls' in filename:
             # Assume that the user uploaded an excel file
             df = pd.read_excel(io.BytesIO(decoded))
+            global df1
+            df1 = df
             global x
             x = pd.to_datetime(df.data)
+            x = x.dt.date
             global z
             y = df['data'].dt.date
             z = df.costs
+
+            global text
+            text = ""
+
             layout = go.Layout(title = 'Time Series Plot',
                    hovermode = 'closest')
             fig = go.Figure()
             #fig = go.Figure(data = [{"x": x, "y": df.costs}], layout = layout)
             fig.add_trace(go.Scatter(x=[0, 1, 2, 3, 4, 5], y=[1, 0.5, 0.7, -1.2, 0.3, 0.4]))
-            fig.add_trace(go.Bar(x=[0, 1, 2, 3, 4, 5], y=[5, 5, 7, 4, 1, 3]))
-            global xxx
-            xxx = [1,1,1]
-            print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZ",x,"YYYYYYYYYYYYYYYYYYYYYYYYY",z, "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
-            
-
+            fig.add_trace(go.Bar(x=[0, 1, 2, 3, 4, 5], y=[5, 5, 7, 4, 1, 3]))  
+            global r
+            r = 0
+            global t
+            t = "Udało się!!!!????????????????????????????????"       
             
     except Exception as e:
         print(e)
@@ -120,7 +240,7 @@ def parse_contents(contents, filename, date):
                             ),
         html.P([
                     html.Label("Time Period"),
-                    dcc.RangeSlider(id = 'slider',
+                    dcc.RangeSlider(id = 'sliderx',
                                     #marks = {i : y[i] {‘label’ : available_dates_rangeslider[i], ‘style’:{‘transform’:‘rotate(-90deg)’, ‘font-size’:‘8px’}} for i in range(len(y))},
                                     marks={i : {'label' : y[i], 'style':{'transform':'rotate(-90deg)', 'font-size':'15px'}} for i in range(0, len(y)) if i %2 ==0},
                                     min = 1,
@@ -134,7 +254,9 @@ def parse_contents(contents, filename, date):
                     
     ])
 
-@app.callback(Output('plot', 'figure'),
+# Callback for Apka
+
+@app.callback(Output('outputt', 'figure'),
              [Input('slider', 'value')])
 
 def update_figure(value):
@@ -142,6 +264,15 @@ def update_figure(value):
 
     return print("zzzzzzzzzzzzzzzzzzz", value[0], value[1], "razem ", value)
 
+# Callback tfor Apka
+""" @app.callback(
+    Output('outputt', 'children'),
+    [Input('drop', 'options')]
+)
+
+def update_it(zork):
+    return print (zork) """
+ 
 # Callback to download file
 
 @app.callback(Output('output-data-upload', 'children'),

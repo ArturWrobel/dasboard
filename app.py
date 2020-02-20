@@ -14,7 +14,7 @@ from navbar import Navbar
 
 df = pd.read_csv('https://raw.githubusercontent.com/jayohelee/dash-tutorial/master/data/population_il_cities.csv')
 df.set_index(df.iloc[:,0], drop = True, inplace = True)
-df = df.iloc[:,1:]
+df = df.iloc[:,1:] 
 
 nav = Navbar()
 
