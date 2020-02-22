@@ -38,22 +38,7 @@ def body (x,z, text):
     ],
     multi=True,
     value="re"
-)  ,
-html.Br(),
-html.Br()
- ,
-        html.P([
-                    html.Label("Time Period"),
-                    dcc.RangeSlider(id = 'slider',
-                                    #marks = {i : y[i] {‘label’ : available_dates_rangeslider[i], ‘style’:{‘transform’:‘rotate(-90deg)’, ‘font-size’:‘8px’}} for i in range(len(y))},
-                                    marks={i : {'label' : x[i], 'style':{'transform':'rotate(-45deg)', 'font-size':'15px'}} for i in range(0, len(x)) if i %2 ==1 },
-                                    min = 1,
-                                    max = len(x),
-                                    value = [3, len(x)-2])
-                        ], style = {'width' : '100%',
-                                    'fontSize' : '20px',
-                                    'display': 'inline-block'}),
-       ],
+)],
 className="mt-4",
 )
 

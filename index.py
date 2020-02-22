@@ -10,7 +10,8 @@ from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 from app import App, build_graph
 from charts import Charts
-from homepage import Homepage
+from report import Report, pdf_rep
+from send import Send, email_send
 from apka import Apka
 from download import Download
 from home import Home
@@ -26,9 +27,8 @@ external_stylesheets = [
     
 ]
 df1 = []
-df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
 r = 1
-t = "Please load data first"
+t = "Please download data first"
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -56,9 +56,11 @@ def display_page(pathname):
     elif pathname == '/apka':
         return Apka(x,z, text)
     elif pathname == '/charts':
-        return Charts(r,t, x, df1)
-    elif pathname == '/homepage':
-        return Homepage()
+        return Charts(r, t, df1)
+    elif pathname == '/report':
+        return Report(r, t, df1)
+    elif pathname == '/send':
+        return Send(r, t)
     else:
         return Home()
 
@@ -72,41 +74,7 @@ def update_graph(city):
     graph = build_graph(city)
     return graph
 
-# Callback (Charts)
-
-@app.callback(
-    Output('graph-with-slider', 'figure'),
-    [Input('year-slider', 'value')])
-def update_figure(selected_year):
-    filtered_df = df[df.year == selected_year]
-    traces = []
-    for i in filtered_df.continent.unique():
-        df_by_continent = filtered_df[filtered_df['continent'] == i]
-        traces.append(dict(
-            x=df_by_continent['gdpPercap'],
-            y=df_by_continent['lifeExp'],
-            text=df_by_continent['country'],
-            mode='markers',
-            opacity=0.7,
-            marker={
-                'size': 15,
-                'line': {'width': 0.5, 'color': 'white'}
-            },
-            name=i
-        ))
-
-    return {
-        'data': traces,
-        'layout': dict(
-            xaxis={'type': 'log', 'title': 'GDP Per Capita',
-                   'range':[2.3, 4.8]},
-            yaxis={'title': 'Life Expectancy', 'range': [20, 90]},
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
-            legend={'x': 0, 'y': 1},
-            hovermode='closest',
-            transition = {'duration': 500},
-        )
-    }
+# Callback (Chart)
 
 @app.callback(
     Output('gra', 'figure'),
@@ -118,8 +86,12 @@ def up(figure):
         do = 0
         data = []
     else:
+        df1.data = pd.to_datetime(df1.data)
+        df1.data = df1.data.dt.date
+        dat = df1.data[figure[0]:(figure[1]+1)].tolist()
         g = df1.index[figure[0]:(figure[1]+1)].tolist()
-        print("gggggggg",g)
+        dat = [dat[i].strftime('%d/%m/%Y') for i in range(len(g))]
+        
         print("figures ",figure[0]," and ", figure[1])
         od = df1["data"][figure[0]]
         
@@ -128,25 +100,22 @@ def up(figure):
 
         data = [
         dict(
-            x = g,
+            x = dat,
             y = [df1["costs"][i] for i in g],
-            name = "costs",
-            marker=dict(
-                    color='rgb(26, 118, 255)'
-                )
+            name = "costs"
         ),
         dict(
-            x = g,
+            x = dat,
             y = [df1["sold"][i] for i in g],
             name = "sold"
         ),
         dict(
-            x = g,
+            x = dat,
             y = [df1["result"][i] for i in g],
             name = "result"
         ),
         dict(
-            x = g,
+            x = dat,
             y = [df1["cumulated"][i] for i in g],
             name = "cumulated"
         )
@@ -165,6 +134,21 @@ def up(figure):
             transition = {'duration': 500},
         )
     }
+
+# Callback Prepeare PDF file
+
+@app.callback(
+    Output("example-output", "children"), [Input("example-button", "n_clicks")]
+)
+def on_button_click(n):
+    if r == 0:
+        if n is None:
+            return "Please push button to prepeare PDF file"
+        else:
+            pdf_rep()      
+            return "PDF file is ready"
+    else:
+        return "Please download data first"
 
 # Reading file
 
@@ -253,15 +237,6 @@ def update_figure(value):
     print(77)
 
     return print("zzzzzzzzzzzzzzzzzzz", value[0], value[1], "razem ", value)
-
-# Callback tfor Apka
-""" @app.callback(
-    Output('outputt', 'children'),
-    [Input('drop', 'options')]
-)
-
-def update_it(zork):
-    return print (zork) """
  
 # Callback to download file
 
@@ -278,4 +253,4 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
         return children
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
