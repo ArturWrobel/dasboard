@@ -29,12 +29,15 @@ def email_send():
     s.send_message(msg)
 
 def Send(r, t):
-    if r == 0:
-        t = "File sent to: {}".format(receiver)
-        email_send()
-        print ("załadowane!")
-    else:
-        print ("nie załadowane")
+    try:
+        if r == 0:
+            t = "File sent to: {}".format(receiver)
+            email_send()
+            print ("załadowane!")
+        else:
+            print ("nie załadowane")
+    except FileNotFoundError:
+        t = "Please prepeare PDF file first"
 
     nav = Navbar()
 
