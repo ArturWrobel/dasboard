@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 
 from navbar import Navbar
 
@@ -19,7 +20,7 @@ def Charts(r, t, df1):
         
         
     header = html.H3(
-        '{}'. format(t)
+        ['{}'. format(t)], style={"color": "red"}
     )
 
     graph = dcc.Graph(id='gra')

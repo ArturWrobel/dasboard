@@ -43,7 +43,6 @@ app.layout = html.Div([
 
 x=[]
 z=[]
-text = "Please download data first"
 
 @app.callback(Output('page-content', 'children'),
             [Input('url', 'pathname')])
@@ -54,7 +53,7 @@ def display_page(pathname):
     elif pathname == '/app':
         return App()
     elif pathname == '/apka':
-        return Apka(x,z, text)
+        return Apka(r, t, df1)
     elif pathname == '/charts':
         return Charts(r, t, df1)
     elif pathname == '/report':
@@ -174,9 +173,6 @@ def parse_contents(contents, filename, date):
             y = df['data'].dt.date
             z = df.costs
 
-            global text
-            text = ""
-
             layout = go.Layout(title = 'Time Series Plot',
                    hovermode = 'closest')
             fig = go.Figure()
@@ -186,7 +182,7 @@ def parse_contents(contents, filename, date):
             global r
             r = 0
             global t
-            t = "Download succesful :)"       
+            t = ""       
             
     except Exception as e:
         print(e)
@@ -230,13 +226,11 @@ def parse_contents(contents, filename, date):
 
 # Callback for Apka
 
-@app.callback(Output('outputt', 'figure'),
-             [Input('slider', 'value')])
-
-def update_figure(value):
-    print(77)
-
-    return print("zzzzzzzzzzzzzzzzzzz", value[0], value[1], "razem ", value)
+@app.callback(
+    dash.dependencies.Output('dd-output-container', 'children'),
+    [dash.dependencies.Input('demo-dropdown', 'value')])
+def update_output(value):
+    return 'You have selected "{}"'.format(value)
  
 # Callback to download file
 

@@ -42,7 +42,7 @@ def Send(r, t):
     nav = Navbar()
 
     header = html.H3(
-        '{}'. format(t)
+        ['{}'. format(t)], style={"color": "red", "margin-top" : "100px", "margin-left" : "100px"}
     )
 
     layout = html.Div([

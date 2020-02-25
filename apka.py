@@ -1,56 +1,61 @@
+import pandas as pd
+import plotly.graph_objects as go
 import dash
-import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Output, Input
-import plotly.graph_objects as go
+import dash_bootstrap_components as dbc
 
 from navbar import Navbar
 
 nav = Navbar()
 
-def body (x,z, text):
-    
-    return dbc.Container(
-    [
-       
-               dbc.Col(
-                  [
-                     html.H1(text),                         
-                   ],
-                  
-               ),
-              dbc.Col(
-                 [
-                     dcc.Graph(
-                         figure={"data": [{"x": x, "y": z}]}
-                            ),
-                        ]
-                     ),
-                
+def Apka(r, t, df1):
+    if r == 0:
+        print ("załadowane!")
+        ti = pd.to_datetime(df1.data)
+        ti = ti.dt.date
+    else:
+        print ("nie załadowane")
+        ti =[]
+        
+        
+    header = html.H3(
+        ['{}'. format(t)], style={"color": "red"}
+    )
 
-            dcc.Dropdown(id = 'drop',
-    options=[
-        {'label': 'costs', 'value': 'co'},
-        {'label': 'sold', 'value': 'so'},
-        {'label': 'result', 'value': 're'},
-        {'label': 'cumulated', 'value': 'cu'}
-    ],
-    multi=True,
-    value="re"
-)],
-className="mt-4",
-)
+    graph = dcc.Graph(id='gra')
+    slider = dcc.RangeSlider(id = 'daty-slider',
+            marks={i : {'label' : ti[i], 'style':{'font-size':'15px'}} for i in range(0, len(ti)) if i %2 == 1 },
+            min = 0,
+            max = len(ti)-1,
+            value = [0, len(ti)])
 
+    drop = html.Div([
+    dcc.Dropdown(
+        id='demo-dropdown',
+        options=[
+            {'label': 'New York City', 'value': 'NYC'},
+            {'label': 'Montreal', 'value': 'MTL'},
+            {'label': 'San Francisco', 'value': 'SF'}
+        ],
+        value='NYC',
+        multi=True
+    ),
+    html.Div(id='dd-output-container')
+])
 
-def Apka(x,z, text):
     layout = html.Div([
-    nav,
-    body(x, z, text)
+        nav,
+        header,
+        graph,
+        html.Br(),
+        html.Br(),
+        html.Br(),
+        html.Br(),
+        slider,
+        html.Br(),
+        html.Br(),
+        drop
     ])
     return layout
-
-
-
-app = dash.Dash(__name__, external_stylesheets = [dbc.themes.UNITED])
-app.layout = Apka([],[],'')
+    

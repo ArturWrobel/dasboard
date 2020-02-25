@@ -57,7 +57,7 @@ def Report(r, t, df1):
         print ("załadowane!")
         #ti = pd.to_datetime(df1.data)
         #ti = ti.dt.date
-        t = "Report is ready"
+        t = ""
         x=[1,2,3,4,5,6,7,8,9]
         y=[8,1,7,4,5,3,1,6,8]\
         
@@ -73,8 +73,8 @@ def Report(r, t, df1):
         b=[]
         text = ""
         
-    header = html.H3(
-        '{}'. format(t)
+    header = html.H3(['{}'. format(t)], style={"color": "red"}
+        
     )
 
     row = html.Div(
@@ -131,16 +131,16 @@ def Report(r, t, df1):
         )
                          }
                             ),
-                ],
+                ],className="mt-4",
                 ),
                 ],
 className="mt-4",
 )
     button = html.Div(
     [
-        dbc.Button("PDF file", id="example-button", className="mr-2"), 
-        html.Span(id="example-output", style={"vertical-align": "middle"}),
-    ]
+        dbc.Button("PDF file", id="example-button", className="btn btn-danger btn-lg"), 
+        html.Span(id="example-output", style={"vertical-align": "middle", "margin-left":"50px"}),
+    ], style={"margin-left": "50%"}
 )
     
     layout = html.Div([
