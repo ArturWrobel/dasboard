@@ -32,10 +32,12 @@ def Navbar():
                 href="/home",
             ),
             
-            dbc.NavItem(dbc.NavLink("Download", href="/download",  className="ml-5")),
+              dbc.NavItem(dbc.NavLink("Download", href="/download",  className="ml-5")),
+              dbc.NavItem(dbc.NavLink("Table", href="/table")),
               dbc.NavItem(dbc.NavLink("App", href="/app")),
               dbc.NavItem(dbc.NavLink("Apka", href="/apka")),
               dbc.NavItem(dbc.NavLink("Charts", href="/charts")),
+              dbc.NavItem(dbc.NavLink("Calculate", href="/calc")),
               dbc.NavItem(dbc.NavLink("Report", href="/report")),
               dbc.NavItem(dbc.NavLink("Send", href="/send")),
         ],

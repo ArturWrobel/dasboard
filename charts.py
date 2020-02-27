@@ -11,11 +11,9 @@ nav = Navbar()
 
 def Charts(r, t, df1):
     if r == 0:
-        print ("załadowane!")
         ti = pd.to_datetime(df1.data)
         ti = ti.dt.date
     else:
-        print ("nie załadowane")
         ti =[]
         
         

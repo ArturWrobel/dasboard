@@ -51,6 +51,3 @@ def Download():
     body
     ])
     return layout
-
-app = dash.Dash(__name__, external_stylesheets = [dbc.themes.UNITED])
-app.layout = Download()

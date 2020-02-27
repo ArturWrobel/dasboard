@@ -23,7 +23,7 @@ fig0.update_layout(margin = dict(t=0, l=0, r=0, b=0), paper_bgcolor='rgb(248, 24
 # Fig1
 
 fig1 = go.Figure(data=[go.Pie
-(labels= ["A","B","C","D"], values=[4500, 2500, 1053, 500], pull=[0, 0.2, 0, 0])])
+(labels= ["A","B","C","D"], values=[4500, 2500, 1500, 1100], pull=[0, 0.2, 0, 0])])
 
 colors1 = ['gold', 'mediumturquoise', 'darkorange', 'lightgreen']
 
@@ -225,9 +225,3 @@ def Home():
     body
     ])
     return layout
-
-app = dash.Dash(__name__, external_stylesheets = [dbc.themes.UNITED])
-app.layout = Home()
-
-if __name__ == "__main__":
-    app.run_server()
