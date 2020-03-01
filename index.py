@@ -358,9 +358,9 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
 # Callback to Table
 
 @app.callback(
-    Output('table-editing-simple-output', 'figure'),
-    [Input('table-editing-simple', 'data'),
-     Input('table-editing-simple', 'columns')])
+    Output('table-output', 'figure'),
+    [Input('table-edit', 'data'),
+     Input('table-edit', 'columns')])
 def display_output(rows, columns):
     df = pd.DataFrame(rows, columns=[c['name'] for c in columns])
     return {

@@ -10,29 +10,40 @@ from navbar import Navbar
 
 nav = Navbar()
 
+header = html.Div([html.H3(
+        "Projects comparison"
+    )], style={"margin-left":"5%"} )
+
 params = [
-    'Weight', 'Torque', 'Width', 'Height',
-    'Efficiency', 'Power', 'Displacement'
+    'NPV', 'IRR', 'Investment', 'Term',
+    'Capacity', 'Power'
 ]
 
-layout = html.Div([nav,
+table = html.Div([
     dash_table.DataTable(
-        id='table-editing-simple',
+        id='table-edit',
         columns=(
-            [{'id': 'Model', 'name': 'Model'}] +
+            [{'id': 'Project', 'name': 'Project'}] +
             [{'id': p, 'name': p} for p in params]
         ),
         data=[
-            dict(Model=i, **{param: 0 for param in params})
+            dict(Project=i, **{param: 0 for param in params})
             for i in range(1, 5)
         ],
-        editable=True
+        style_header={ 'border': '2px solid black', 'fontWeight': 'bold', "textAlign" :"center", 'color': 'black' },
+        editable=True,
+        export_format='xlsx',
     ),
-    dcc.Graph(id='table-editing-simple-output')
-])
-
-
-
+    html.Br(),
+    dcc.Graph(id='table-output')
+],  style={'width': "90%", "margin-left":"5%"})
 
 def Table():
+    layout = html.Div([
+        nav,
+        html.Br(),
+        header,
+        html.Br(),
+        table
+    ])
     return layout

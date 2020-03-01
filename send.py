@@ -6,6 +6,7 @@ from dash.dependencies import Output, Input
 
 import smtplib, ssl
 from email.message import EmailMessage
+from data import mailing
 
 from navbar import Navbar
 
@@ -29,7 +30,7 @@ def email_send(receiver):
 
     s = smtplib.SMTP("smtp.gmail.com", 587)
     s.starttls(context=context)
-    s.login("artur.r.wrobel@gmail.com", "EWing2015")
+    s.login("artur.r.wrobel@gmail.com", "{}".format(mailing))
     s.send_message(msg)
 
 import os

@@ -13,30 +13,26 @@ def Calc(r, t, df1):
     if r == 0:
         ti = pd.to_datetime(df1.data)
         ti = ti.dt.date
+        desc = df1.describe()
     else:
         ti =[]
-        
+        desc = ""
         
     header = html.H3(
         ['{}'. format(t)], style={"color": "red"}
     )
 
-    graph = dcc.Graph(id='gra')
-    slider = dcc.RangeSlider(id = 'daty-slider',
-            marks={i : {'label' : ti[i], 'style':{'font-size':'15px'}} for i in range(0, len(ti)) if i %2 == 1 },
-            min = 0,
-            max = len(ti)-1,
-            value = [0, len(ti)])
+    comment = html.H3(
+        ['{}'. format(desc)], style={"color": "red"}
+    )
 
     layout = html.Div([
         nav,
         header,
-        graph,
         html.Br(),
         html.Br(),
-        html.Br(),
-        html.Br(),
-        slider
+        comment
+
     ])
     return layout
     
