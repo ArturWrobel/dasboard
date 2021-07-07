@@ -21,9 +21,9 @@ filename="test.pdf"
 def email_send(receiver):
     msg = EmailMessage()
     msg["From"] = sender
-    msg["Subject"] = "Email created in Dash"
+    msg["Subject"] = "Email created in Aplication during our presentation"
     msg["To"] = receiver
-    msg.set_content("This is the message body. This is the message body.")
+    msg.set_content("This is the message body.")
     msg.add_attachment(open(filename, "r", errors='ignore').read(), filename="test.pdf")
     
     context=ssl.create_default_context()
@@ -54,6 +54,7 @@ def Send(r, t):
     b = "zdzislaw.filipowski1@orange.com"
     c = "artur.r.wrobel@gmail.com"
     d = "artur.raf.wrobel@gmail.com"
+    e = "ewa.rogowska@orange.com"
 
 
     email_choice = html.Div([
@@ -64,6 +65,7 @@ def Send(r, t):
             {'label': 'Zdzislaw', 'value': b},
             {'label': 'Artur1', 'value': c},
             {'label': 'Artur2', 'value': d},
+            {'label': 'Ewa', 'value': e},
         ], style= {"width": "70%", "left": "100px" },
         multi=True,
     

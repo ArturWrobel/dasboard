@@ -16,7 +16,7 @@ header = html.Div([html.H3(
 
 params = [
     'NPV', 'IRR', 'Investment', 'Term',
-    'Capacity', 'Power'
+    'Capacity'
 ]
 
 table = html.Div([

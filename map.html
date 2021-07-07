@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_f5e0016a26854fae96046cbcb00afe78 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_f5e0016a26854fae96046cbcb00afe78" ></div>
+        
+</body>
+<script>    
+    
+            var map_f5e0016a26854fae96046cbcb00afe78 = L.map(
+                "map_f5e0016a26854fae96046cbcb00afe78",
+                {
+                    center: [52.231702816483164, 21.006224155426025],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 13,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_66043a1e549b4bbd8b3435b8c50ea59f = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_f5e0016a26854fae96046cbcb00afe78);
+        
+    
+            var marker_d94d752301534020a2e60a95662ecddb = L.marker(
+                [52.231702816483164, 21.006224155426025],
+                {}
+            ).addTo(map_f5e0016a26854fae96046cbcb00afe78);
+        
+    
+        var popup_70b0e0391a394712bc81316b6c464be1 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_717614dcebc74559903f4867a85cb456 = $(`<div id="html_717614dcebc74559903f4867a85cb456" style="width: 100.0%; height: 100.0%;"><strong>Location One</strong></div>`)[0];
+            popup_70b0e0391a394712bc81316b6c464be1.setContent(html_717614dcebc74559903f4867a85cb456);
+        
+
+        marker_d94d752301534020a2e60a95662ecddb.bindPopup(popup_70b0e0391a394712bc81316b6c464be1)
+        ;
+
+        
+    
+    
+            marker_d94d752301534020a2e60a95662ecddb.bindTooltip(
+                `<div>
+                     Click for Info
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_68dae7fa7d1a4dd6a57911e1e4b5d482 = L.marker(
+                [52.218098581239495, 20.962386131286618],
+                {}
+            ).addTo(map_f5e0016a26854fae96046cbcb00afe78);
+        
+    
+            var icon_0b0a59517e354ce686fac2bc43b46e7b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "cloud", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_68dae7fa7d1a4dd6a57911e1e4b5d482.setIcon(icon_0b0a59517e354ce686fac2bc43b46e7b);
+        
+    
+        var popup_818c4d7628e24846a428f9e33d24347f = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ad27c2e005fb46579ed8ef349c360da2 = $(`<div id="html_ad27c2e005fb46579ed8ef349c360da2" style="width: 100.0%; height: 100.0%;"><strong>Dworzec Zachodni</strong></div>`)[0];
+            popup_818c4d7628e24846a428f9e33d24347f.setContent(html_ad27c2e005fb46579ed8ef349c360da2);
+        
+
+        marker_68dae7fa7d1a4dd6a57911e1e4b5d482.bindPopup(popup_818c4d7628e24846a428f9e33d24347f)
+        ;
+
+        
+    
+    
+            marker_68dae7fa7d1a4dd6a57911e1e4b5d482.bindTooltip(
+                `<div>
+                     Click for Info
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a1f8ee1f21d04a04812fde37ea8a0ad1 = L.marker(
+                [52.21306330038455, 20.95112085342407],
+                {}
+            ).addTo(map_f5e0016a26854fae96046cbcb00afe78);
+        
+    
+            var icon_985680e7c78c463cbd8299789d45fdff = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "purple", "prefix": "glyphicon"}
+            );
+            marker_a1f8ee1f21d04a04812fde37ea8a0ad1.setIcon(icon_985680e7c78c463cbd8299789d45fdff);
+        
+    
+        var popup_3712e66d6138418a8471aa32681025e7 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_e3a86acce65f4e79a3be6ad32be4c711 = $(`<div id="html_e3a86acce65f4e79a3be6ad32be4c711" style="width: 100.0%; height: 100.0%;"><strong>Reduta</strong></div>`)[0];
+            popup_3712e66d6138418a8471aa32681025e7.setContent(html_e3a86acce65f4e79a3be6ad32be4c711);
+        
+
+        marker_a1f8ee1f21d04a04812fde37ea8a0ad1.bindPopup(popup_3712e66d6138418a8471aa32681025e7)
+        ;
+
+        
+    
+    
+            marker_a1f8ee1f21d04a04812fde37ea8a0ad1.bindTooltip(
+                `<div>
+                     Click for Info
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1778c76ced6f45f282d9a0dd73307339 = L.marker(
+                [52.2126557200447, 20.95571279525757],
+                {}
+            ).addTo(map_f5e0016a26854fae96046cbcb00afe78);
+        
+    
+            var icon_013f6a0387f44db095fa84fa58d46ba3 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "leaf", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_1778c76ced6f45f282d9a0dd73307339.setIcon(icon_013f6a0387f44db095fa84fa58d46ba3);
+        
+    
+        var popup_99d0b75050ec4f258ae15b8eb1aadd58 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_439d1d4ab7c24cd9a1560f55da98fc49 = $(`<div id="html_439d1d4ab7c24cd9a1560f55da98fc49" style="width: 100.0%; height: 100.0%;"><strong>Blue City</strong></div>`)[0];
+            popup_99d0b75050ec4f258ae15b8eb1aadd58.setContent(html_439d1d4ab7c24cd9a1560f55da98fc49);
+        
+
+        marker_1778c76ced6f45f282d9a0dd73307339.bindPopup(popup_99d0b75050ec4f258ae15b8eb1aadd58)
+        ;
+
+        
+    
+    
+            marker_1778c76ced6f45f282d9a0dd73307339.bindTooltip(
+                `<div>
+                     Click for Info
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6fd6dcd884db46b3b5f23f0301b5c9fc = L.marker(
+                [52.208431784250855, 20.94619631767273],
+                {}
+            ).addTo(map_f5e0016a26854fae96046cbcb00afe78);
+        
+    
+        var custom_icon_92d1daff0e364f729972d43ec6432c29 = L.icon({"iconSize": [30, 30], "iconUrl": "data:image/jpg;base64,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"});
+        marker_6fd6dcd884db46b3b5f23f0301b5c9fc.setIcon(custom_icon_92d1daff0e364f729972d43ec6432c29);
+        
+    
+        var popup_0f584d3ab58741b9a71680f325062710 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_89406e39f4aa4618a73e027eba09d115 = $(`<div id="html_89406e39f4aa4618a73e027eba09d115" style="width: 100.0%; height: 100.0%;"><strong>Orange Polska S.A.</strong></div>`)[0];
+            popup_0f584d3ab58741b9a71680f325062710.setContent(html_89406e39f4aa4618a73e027eba09d115);
+        
+
+        marker_6fd6dcd884db46b3b5f23f0301b5c9fc.bindPopup(popup_0f584d3ab58741b9a71680f325062710)
+        ;
+
+        
+    
+    
+            marker_6fd6dcd884db46b3b5f23f0301b5c9fc.bindTooltip(
+                `<div>
+                     Click for Info
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>

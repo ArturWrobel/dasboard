@@ -26,7 +26,7 @@ body = dbc.Container(
             'Drag and Drop or ',
             html.A('Select File')
         ]),
-        style={
+        style={ 
             'width': '100%',
             'height': '60px',
             'lineHeight': '60px',

@@ -1,3 +1,4 @@
+import os
 import base64
 import datetime
 import io
@@ -26,7 +27,7 @@ import plotly.graph_objs as go
 # Links to CSS, JS
 external_stylesheets = [
     dbc.themes.UNITED,
-    
+
 ]
 df1 = []
 r = 1
@@ -37,18 +38,18 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div([
-    dcc.Location(id = 'url', refresh = False),
-    html.Div(id = 'page-content')
+    dcc.Location(id='url', refresh=False),
+    html.Div(id='page-content')
 ])
 
 # Callback to chose page
 
-x=[]
-z=[]
+x = []
+z = []
+
 
 @app.callback(Output('page-content', 'children'),
-            [Input('url', 'pathname')])
-
+              [Input('url', 'pathname')])
 def display_page(pathname):
     if pathname == '/download':
         return Download()
@@ -70,22 +71,24 @@ def display_page(pathname):
         return Home()
 
 # Callback (App)
+
+
 @app.callback(
     Output('output', 'children'),
     [Input('pop_dropdown', 'value')]
 )
-
 def update_graph(city):
     graph = build_graph(city)
     return graph
 
 # Callback (Chart)
 
+
 @app.callback(
     Output('gra', 'figure'),
     [Input('daty-slider', 'value')])
 def up(figure):
-    
+
     if r == 1:
         od = 0
         do = 0
@@ -96,51 +99,52 @@ def up(figure):
         dat = df1.data[figure[0]:(figure[1]+1)].tolist()
         g = df1.index[figure[0]:(figure[1]+1)].tolist()
         dat = [dat[i].strftime('%d/%m/%Y') for i in range(len(g))]
-        
-        print("figures ",figure[0]," and ", figure[1])
+
+        print("figures ", figure[0], " and ", figure[1])
         od = df1["data"][figure[0]]
-        
+
         do = df1["data"][figure[1]-1]
-        print("od: ", od, " do: ",do)
+        print("od: ", od, " do: ", do)
 
         data = [
-        dict(
-            x = dat,
-            y = [df1["costs"][i] for i in g],
-            name = "costs"
-        ),
-        dict(
-            x = dat,
-            y = [df1["sold"][i] for i in g],
-            name = "sold"
-        ),
-        dict(
-            x = dat,
-            y = [df1["result"][i] for i in g],
-            name = "result"
-        ),
-        dict(
-            x = dat,
-            y = [df1["cumulated"][i] for i in g],
-            name = "cumulated"
-        )
-    ]
+            dict(
+                x=dat,
+                y=[df1["costs"][i] for i in g],
+                name="costs"
+            ),
+            dict(
+                x=dat,
+                y=[df1["sold"][i] for i in g],
+                name="sold"
+            ),
+            dict(
+                x=dat,
+                y=[df1["result"][i] for i in g],
+                name="result"
+            ),
+            dict(
+                x=dat,
+                y=[df1["cumulated"][i] for i in g],
+                name="cumulated"
+            )
+        ]
 
     return {"data": data,
-    "layout": dict(
-            title='Sales data',
-            showlegend=True,
-            legend=dict(
-                x=1,
-                y=1
-            ),
-            margin=dict(l=40, r=0, t=40, b=30),
-            hovermode='closest',
-            transition = {'duration': 500},
-        )
-    }
+            "layout": dict(
+                title='Sales data',
+                showlegend=True,
+                legend=dict(
+                    x=1,
+                    y=1
+                ),
+                margin=dict(l=40, r=0, t=40, b=30),
+                hovermode='closest',
+                transition={'duration': 500},
+            )
+            }
 
 # Callback Prepeare PDF file
+
 
 @app.callback(
     Output("example-output", "children"), [Input("example-button", "n_clicks")]
@@ -150,12 +154,13 @@ def on_button_click(n):
         if n is None:
             return "Please push button to prepeare PDF file"
         else:
-            pdf_rep()      
+            pdf_rep()
             return "PDF file is ready"
     else:
         return "Please download data first"
 
 # Reading file
+
 
 def parse_contents(contents, filename, date):
     content_type, content_string = contents.split(',')
@@ -166,7 +171,7 @@ def parse_contents(contents, filename, date):
             # Assume that the user uploaded a CSV file
             df = pd.read_csv(
                 io.StringIO(decoded.decode('utf-8')))
-            print(df)   
+            print(df)
         elif 'xls' in filename:
             # Assume that the user uploaded an excel file
             df = pd.read_excel(io.BytesIO(decoded))
@@ -182,8 +187,8 @@ def parse_contents(contents, filename, date):
             global r
             r = 0
             global t
-            t = ""       
-            
+            t = ""
+
     except Exception as e:
         print(e)
         return html.Div([
@@ -197,52 +202,57 @@ def parse_contents(contents, filename, date):
         dash_table.DataTable(
             data=df.to_dict('records'),
             columns=[{'name': i, 'id': i} for i in df.columns],
-    style_cell_conditional=[
-        {'if': {'column_id': 'data'}, 'width': '200px', "textAlign" :"center"},
-        {'if': {'column_id': 'costs'}, 'width': '200px','color': 'red'},
-        {'if': {'column_id': 'sold'}, 'width': '200px','color': 'green'},
-        {'if': {'column_id': 'result'}, 'width': '200px'},
-        {'if': {'column_id': 'cumulated'}, 'width': '200px', 'color': 'blue'},
-        ],
+            style_cell_conditional=[
+                {'if': {'column_id': 'data'}, 'width': '200px', "textAlign": "center"},
+                {'if': {'column_id': 'costs'}, 'width': '200px', 'color': 'red'},
+                {'if': {'column_id': 'sold'}, 'width': '200px', 'color': 'green'},
+                {'if': {'column_id': 'result'}, 'width': '200px'},
+                {'if': {'column_id': 'cumulated'},
+                    'width': '200px', 'color': 'blue'},
+            ],
 
-        style_data_conditional=[
-        {
-            'if': {'row_index': 'odd'},
-            'backgroundColor': 'rgb(248, 248, 248)'
-        },
-        {
-            'if': {
-                'column_id': 'result',
-                'filter_query': '{result} < 0'
-            },
-            'backgroundColor': 'red',
-            'color': 'white',
-        }
-        ],
+            style_data_conditional=[
+                {
+                    'if': {'row_index': 'odd'},
+                    'backgroundColor': 'rgb(248, 248, 248)'
+                },
+                {
+                    'if': {
+                        'column_id': 'result',
+                        'filter_query': '{result} < 0'
+                    },
+                    'backgroundColor': 'red',
+                    'color': 'white',
+                }
+            ],
 
-        style_header={ 'border': '2px solid black', 'fontWeight': 'bold', "textAlign" :"center", 'color': 'black' },
+            style_header={'border': '2px solid black', 'fontWeight': 'bold',
+                          "textAlign": "center", 'color': 'black'},
         ),
 
 
         html.Hr(),
-                     html.H2("Graph of sales during Feb"),
-                     dcc.Graph(id='e-graph',
-                         figure={"data": [{"x": x, "y": df.costs, 'showlegend': False},
-                         {"x": x, "y": df.sold, 'type': 'line', 'fillcolor': 'rgba(68, 68, 68, 0.1)', 'fill': 'tonexty',
-                          'line': {'width': 4}, 'name': 'Upper Pred', 'showlegend': False, 'hoverinfo': 'none'},
-                         {"x": x, "y": df.result, 'type': 'bar', 'showlegend': False},
-                         {"x": x, "y": df.cumulated, 'showlegend': False},
-                         ]}
-                            )                   
+        html.H2("Graph of sales during Feb"),
+        dcc.Graph(id='e-graph',
+                  figure={"data": [{"x": x, "y": df.costs, 'showlegend': False},
+                                   {"x": x, "y": df.sold, 'type': 'line', 'fillcolor': 'rgba(68, 68, 68, 0.1)', 'fill': 'tonexty',
+                                    'line': {'width': 4}, 'name': 'Upper Pred', 'showlegend': False, 'hoverinfo': 'none'},
+                                   {"x": x, "y": df.result, 'type': 'bar',
+                                       'showlegend': False},
+                                   {"x": x, "y": df.cumulated,
+                                       'showlegend': False},
+                                   ]}
+                  )
     ])
 
 # Callback for Apka
+
 
 @app.callback(
     Output('apka', 'figure'),
     [Input('multi-slider', 'value')])
 def up(figure):
-    
+
     if r == 1:
         od = 0
         do = 0
@@ -253,57 +263,58 @@ def up(figure):
         dat = df1.data[figure[0]:(figure[1]+1)].tolist()
         g = df1.index[figure[0]:(figure[1]+1)].tolist()
         dat = [dat[i].strftime('%d/%m/%Y') for i in range(len(g))]
-        
-        print("figures ",figure[0]," and ", figure[1])
+
+        print("figures ", figure[0], " and ", figure[1])
         od = df1["data"][figure[0]]
-        
+
         do = df1["data"][figure[1]-1]
-        print("od: ", od, " do: ",do)
+        print("od: ", od, " do: ", do)
 
         data = [
-        dict(
-            x = dat,
-            y = [df1["costs"][i] for i in g],
-            name = "costs"
-        ),
-        dict(
-            x = dat,
-            y = [df1["sold"][i] for i in g],
-            name = "sold",
-            type = "line",
-            fillcolor = 'rgba(68, 68, 68, 0.1)',
-            fill = "tonexty"
-        ),
-        dict(
-            x = dat,
-            y = [df1["result"][i] for i in g],
-            name = "result",
-            type = "bar"
-            
-        ),
-        dict(
-            x = dat,
-            y = [df1["cumulated"][i] for i in g],
-            name = "cumulated",
-            mode = "markers",
-            marker = {"size": 15},
-        
-        )
-    ]
+            dict(
+                x=dat,
+                y=[df1["costs"][i] for i in g],
+                name="costs"
+            ),
+            dict(
+                x=dat,
+                y=[df1["sold"][i] for i in g],
+                name="sold",
+                type="line",
+                fillcolor='rgba(68, 68, 68, 0.1)',
+                fill="tonexty"
+            ),
+            dict(
+                x=dat,
+                y=[df1["result"][i] for i in g],
+                name="result",
+                type="bar"
+
+            ),
+            dict(
+                x=dat,
+                y=[df1["cumulated"][i] for i in g],
+                name="cumulated",
+                mode="markers",
+                marker={"size": 15},
+
+            )
+        ]
 
     return {"data": data,
-    "layout": dict(
-            title='Sales data',
-            showlegend=True,
-            legend=dict(
-                x=1,
-                y=1
-            ),
-            margin=dict(l=40, r=0, t=40, b=30),
-            hovermode='closest',
-            transition = {'duration': 500},
-        )
-    }
+            "layout": dict(
+                title='Sales data',
+                showlegend=True,
+                legend=dict(
+                    x=1,
+                    y=1
+                ),
+                margin=dict(l=40, r=0, t=40, b=30),
+                hovermode='closest',
+                transition={'duration': 500},
+            )
+            }
+
 
 @app.callback(
     dash.dependencies.Output('dd-output-container', 'children'),
@@ -312,8 +323,10 @@ def update_output(value):
 
     return "{}".format(value)
 
+
 # Callback for Send
 mailing_group = []
+
 
 @app.callback(
     dash.dependencies.Output('email-container', 'children'),
@@ -324,7 +337,6 @@ def update_output(children):
     return ""
 
 
-import os
 @app.callback(
     Output("send-output", "children"), [Input("send-button", "n_clicks")]
 )
@@ -332,9 +344,9 @@ def on_button_click(n):
     if os.path.exists("test.pdf"):
         if r == 0:
             if n is None:
-                return "Please push button send file"          
+                return "Please push button send file"
             else:
-                email_send(mailing_group)     
+                email_send(mailing_group)
                 return "Report sent"
         else:
             return "Please download data first"
@@ -343,11 +355,11 @@ def on_button_click(n):
 
 # Callback to download file
 
+
 @app.callback(Output('output-data-upload', 'children'),
               [Input('upload-data', 'contents')],
               [State('upload-data', 'filename'),
                State('upload-data', 'last_modified')])
-               
 def update_output(list_of_contents, list_of_names, list_of_dates):
     if list_of_contents is not None:
         children = [
@@ -356,6 +368,7 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
         return children
 
 # Callback to Table
+
 
 @app.callback(
     Output('table-output', 'figure'),

@@ -12,9 +12,9 @@ from dash.dependencies import Output, Input
 ## Navbar
 from navbar import Navbar
 
-df = pd.read_csv('https://raw.githubusercontent.com/jayohelee/dash-tutorial/master/data/population_il_cities.csv')
+""" df = pd.read_csv('https://raw.githubusercontent.com/jayohelee/dash-tutorial/master/data/population_il_cities.csv')
 df.set_index(df.iloc[:,0], drop = True, inplace = True)
-df = df.iloc[:,1:] 
+df = df.iloc[:,1:]  """
 
 nav = Navbar()
 
@@ -22,13 +22,13 @@ header = html.H3(
     'Select the name of an Illinois city to see its population!'
 )
 
-options = [{'label':x.replace(', Illinois', ''), 'value': x} for x in df.columns]
+# options = [{'label':x.replace(', Illinois', ''), 'value': x} for x in df.columns]
 
-dropdown = html.Div(dcc.Dropdown(
-    id = 'pop_dropdown',
-    options = options,
-    value = 'Abingdon city, Illinois'
-))
+# dropdown = html.Div(dcc.Dropdown(
+#     id = 'pop_dropdown',
+#     options = options,
+#     value = 'Abingdon city, Illinois'
+# ))
 
 output = html.Div(id = 'output',
                 children = [],
